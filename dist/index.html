@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <title></title>
+                <meta name="description" content="">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <script src="https://kit.fontawesome.com/a5b5422d7d.js" crossorigin="anonymous"></script>
+                        <link rel="stylesheet" href="../src/style.css">
+                        </head>
+                        <body>
+                            <div class="container">
+                                <div class="logo"></div>
+                                <div class="sidebar-container">
+                                    <div class="sidebar-top">
+                                        <button class="new-task icon" id="open-task">New Task</button>
+                                        <button class="new-project icon" id="open-project">New Project</button>
+                                    </div>
+                                    <div class="sidebar-bottom">
+                                        <div class="projects-container">
+                                            <div class="projects-div">Projects</div>
+                                            <button class="project-default-btn icon">Default</button>
+                                            <button class="project-btn2">Work</button>
+                                            <button class="project-btn3">Personal</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="header-container">
+                                    <button class="important icon">Important</button>
+                                    <button class="today icon">Today</button>
+                                    <button class="week icon">Next 7 days</button>
+                                </div>
+                                <div class="main-container">
+                                </div>
+                                <div id="task-modal-container">
+                                    <div id="task-modal">
+                                        <div class="form-container">
+                                            <div class="title-container">
+                                              <label for="title">Title</label>
+                                              <input type="text" id="title" name="title" maxlength="40">
+                                            </div>
+                                            <div class="author-container">
+                                              <label for="author">Author</label>
+                                              <input type="text" id="author" name="author" maxlength="40">
+                                            </div>
+                                            <div class="pages-container">
+                                              <label for="pages">Pages</label>
+                                              <input type="number" id="pages" name="pages">
+                                            </div>
+                                            <div class="modal-bottom">
+                                              <div class="close=task-container">
+                                                <button id="close-task" type="submit">Submit</button>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="project-modal-container">
+                                    <div id="project-modal">
+                                      <h1>Modals gvasdfgdfdf</h1>
+                                      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et aperiam voluptates modi saepe quia ea quasi porro facere numquam eaque?</p>
+                                      <button id="close-project">
+                                        Close me
+                                      </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <script src="main.js"></script>
+                        </body>
+                    </html>
