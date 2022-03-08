@@ -10,11 +10,16 @@ class View {
     this.taskForm = document.querySelector("#task-form");
     this.openProject = document.querySelector("#open-project");
     this.submitProject = document.querySelector("#submit-project");
+    this.editSubmitProject = document.querySelector("#edit-submit-project");
     this.projectModalContainer = document.querySelector(
-      "#project-modal-container"
+      ".project-modal-container"
+    );
+    this.editProjectModalContainer = document.querySelector(
+      ".edit-project-modal-container"
     );
     this.projectForm = document.querySelector("#project-form");
-    this.projectTitle = document.querySelector("#project-title");
+    this.projectTitle = document.querySelector("#project-title"); 
+    this.editProjectTitle = document.querySelector("#edit-project-title"); 
     this.taskTitle = document.querySelector("#title");
     this.editTaskTitle = document.querySelector("#edit-title");
     this.taskDescription = document.querySelector("#description");
@@ -35,9 +40,6 @@ class View {
   }
 
   renderAllProjects(projectArray) {
-    /* while (this.mainContainerTop.firstChild) {
-      this.mainContainerTop.removeChild(this.mainContainerTop.firstChild);
-    } */
     while (this.mainContainer.firstChild) {
       this.mainContainer.removeChild(this.mainContainer.firstChild);
     }
@@ -54,7 +56,20 @@ class View {
       this.projectsDeleteButton.classList.add("projectsDeleteButton");
       this.projectsDeleteButton.textContent = "Del";
       this.projectsDisplay.appendChild(this.projectsDeleteButton);
+
+      const renderEditProjectModal = (() => {
+        this.projectsDisplay.addEventListener("click", (e) => {
+          if (e.target.className === "projectsDisplay") {
+            this.editProjectTitle.value =
+              projectArray[projectArray.indexOf(element)].title;
+            this.editProjectModalContainer.classList.add("show");
+            this.editSubmitProject.setAttribute("data-id", e.target.dataset.id);
+          }
+        });
+      })();
     });
+
+
   }
 
   renderCurrentProject(currentProject) {
@@ -211,6 +226,17 @@ class View {
       this.projectForm.reset();
       this.projectModalContainer.classList.remove("show");
       this.openTask.classList.remove('hide')
+    });
+  }
+
+  sendControllerEditProjectData(editProjectInModel) {
+    this.editSubmitProject.addEventListener("click", (e) => {
+      e.preventDefault();
+      editProjectInModel(
+        e.target.dataset.id,
+        this.editProjectTitle.value
+      );
+      this.editProjectModalContainer.classList.remove("show");
     });
   }
 

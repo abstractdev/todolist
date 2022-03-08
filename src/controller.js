@@ -8,6 +8,7 @@ class Controller {
     this.view = new View();
     this.model = new Model();
     this.view.sendControllerProjectData(this.addProjectToModel.bind(this));
+    this.view.sendControllerEditProjectData(this.editProjectInModel.bind(this));
     this.view.sendControllerTaskData(this.addTaskToModel.bind(this));
     this.view.sendControllerEditTaskData(this.editTaskInModel.bind(this));
     this.view.deleteProjectFromView(this.deleteProjectFromModel.bind(this));
@@ -38,6 +39,16 @@ class Controller {
     this.view.renderCurrentProject(this.model.currentProject);
     this.view.renderTasks(this.model.currentProject.array);
   }
+
+  editProjectInModel(id, title) {
+    this.model.array.forEach((e) => {
+      if (parseInt(id) === e.id) {
+        e.title = title;
+      }
+  })
+  this.view.renderAllProjects(this.model.array);
+  this.view.renderProjectsSidebar(this.model.array);
+}
 
   deleteProjectFromModel = (id) => {
     this.model.array = this.model.array.filter(function (e) {
