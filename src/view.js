@@ -1,6 +1,6 @@
 class View {
   constructor() {
-    this.openTask = document.querySelector("#open-task");
+    this.newTask = document.querySelector("#new-task");
     this.taskModalContainer = document.querySelector("#task-modal-container");
     this.editTaskModalContainer = document.querySelector(
       "#edit-task-modal-container"
@@ -18,8 +18,8 @@ class View {
       ".edit-project-modal-container"
     );
     this.projectForm = document.querySelector("#project-form");
-    this.projectTitle = document.querySelector("#project-title"); 
-    this.editProjectTitle = document.querySelector("#edit-project-title"); 
+    this.projectTitle = document.querySelector("#project-title");
+    this.editProjectTitle = document.querySelector("#edit-project-title");
     this.taskTitle = document.querySelector("#title");
     this.editTaskTitle = document.querySelector("#edit-title");
     this.taskDescription = document.querySelector("#description");
@@ -32,11 +32,16 @@ class View {
     this.mainContainerTopTextContainer = document.querySelector(
       ".main-container-top-text-container"
     );
+    this.mainContainerTopText = document.querySelector(
+      ".main-container-top-text"
+    );
     this.mainContainer = document.querySelector(".main-container");
     this.projectsContainer = document.querySelector(".projects-container");
     this.allProjects = document.querySelector("#all-projects");
+    this.allTasks = document.querySelector("#all-tasks");
     this.container = document.querySelector(".container");
     this.taskModal = document.querySelector(".task-modal");
+    this.todayButton = document.querySelector(".today-button");
   }
 
   renderAllProjects(projectArray) {
@@ -46,12 +51,15 @@ class View {
     projectArray.forEach((element) => {
       this.projectsDisplay = document.createElement("div");
       this.projectsDisplay.classList.add("projectsDisplay");
-      this.projectsDisplay.textContent = element.title;
       this.projectsDisplay.setAttribute(
         "data-id",
         projectArray[projectArray.indexOf(element)].id.toString()
       );
       this.mainContainer.appendChild(this.projectsDisplay);
+      this.projectsText = document.createElement("div");
+      this.projectsText.classList.add("projectsText");
+      this.projectsText.textContent = element.title;
+      this.projectsDisplay.appendChild(this.projectsText)
       this.projectsDeleteButton = document.createElement("button");
       this.projectsDeleteButton.classList.add("projectsDeleteButton");
       this.projectsDeleteButton.textContent = "Del";
@@ -59,29 +67,24 @@ class View {
 
       const renderEditProjectModal = (() => {
         this.projectsDisplay.addEventListener("click", (e) => {
-          if (e.target.className === "projectsDisplay") {
+          if (e.target.className === "projectsText") {
             this.editProjectTitle.value =
               projectArray[projectArray.indexOf(element)].title;
             this.editProjectModalContainer.classList.add("show");
-            this.editSubmitProject.setAttribute("data-id", e.target.dataset.id);
+            this.editSubmitProject.setAttribute("data-id", e.target.parentNode.dataset.id);
           }
         });
       })();
     });
-
-
   }
 
   renderCurrentProject(currentProject) {
-    while (this.mainContainerTopTextContainer.firstChild) {
-      this.mainContainerTopTextContainer.removeChild(
-        this.mainContainerTopTextContainer.firstChild
+    while (this.mainContainerTopText.firstChild) {
+      this.mainContainerTopText.removeChild(
+        this.mainContainerTopText.firstChild
       );
     }
-    this.mainContainerTopText = document.createElement("div");
     this.mainContainerTopText.textContent = currentProject.title;
-    this.mainContainerTopText.classList.add("mainContainerTopText");
-    this.mainContainerTopTextContainer.appendChild(this.mainContainerTopText);
   }
 
   renderProjectsSidebar(projectArray) {
@@ -172,20 +175,20 @@ class View {
       const displayCompleteStatus = (() => {
         if (taskArray[taskArray.indexOf(element)].complete === true) {
           this.tasksText.style.textDecoration = "line-through";
-          this.tasksCheckBox.style.backgroundColor = "blue";
+          this.tasksCheckBox.style.backgroundColor = "seashell";
         }
       })();
 
       const displayPriorityStatus = (() => {
         switch (taskArray[taskArray.indexOf(element)].priority) {
           case "low":
-            this.tasksDisplay.style.backgroundColor = "green";
+            this.dropdownButton.style.backgroundColor = "green";
             break;
           case "medium":
-            this.tasksDisplay.style.backgroundColor = "yellow";
+            this.dropdownButton.style.backgroundColor = "#ffc107";
             break;
           case "high":
-            this.tasksDisplay.style.backgroundColor = "red";
+            this.dropdownButton.style.backgroundColor = "#e44c55";
             break;
         }
       })();
@@ -201,7 +204,10 @@ class View {
             this.editTaskNotes.value =
               taskArray[taskArray.indexOf(element)].notes;
             this.editTaskModalContainer.classList.add("show");
-            this.editSubmitTask.setAttribute("data-id", e.target.parentNode.dataset.id);
+            this.editSubmitTask.setAttribute(
+              "data-id",
+              e.target.parentNode.dataset.id
+            );
           }
         });
       })();
@@ -214,7 +220,7 @@ class View {
   }
 
   renderNewTaskModal() {
-    this.openTask.addEventListener("click", () => {
+    this.newTask.addEventListener("click", () => {
       this.taskModalContainer.classList.add("show");
     });
   }
@@ -225,17 +231,14 @@ class View {
       addProjectToModel(this.projectTitle.value);
       this.projectForm.reset();
       this.projectModalContainer.classList.remove("show");
-      this.openTask.classList.remove('hide')
+      this.newTask.classList.remove("hide");
     });
   }
 
   sendControllerEditProjectData(editProjectInModel) {
     this.editSubmitProject.addEventListener("click", (e) => {
       e.preventDefault();
-      editProjectInModel(
-        e.target.dataset.id,
-        this.editProjectTitle.value
-      );
+      editProjectInModel(e.target.dataset.id, this.editProjectTitle.value);
       this.editProjectModalContainer.classList.remove("show");
     });
   }
@@ -265,7 +268,14 @@ class View {
         this.editTaskNotes.value
       );
       this.editTaskModalContainer.classList.remove("show");
-      this.openTask.classList.remove('hide')
+      if (
+        this.mainContainerTopText.textContent === "Today" ||
+        this.mainContainerTopText.textContent === "All Tasks"
+      ) {
+        this.view.newTask.classList.add("hide");
+      } else {
+        this.newTask.classList.remove("hide");
+      }
     });
   }
 
@@ -336,24 +346,40 @@ class View {
       if (e.target.className === "projectsSidebarButton") {
         console.log("asdf");
         updateModelCurrentProject(e.target.dataset.id);
-        this.openTask.classList.remove('hide')
+        this.newTask.classList.remove("hide");
       }
     });
   }
 
   updateControllerAllProjects(updateModelAllProjects) {
     this.allProjects.addEventListener("click", (e) => {
-      this.mainContainerTopText.textContent = "All Projects"
-      this.openTask.classList.add('hide')
-      updateModelAllProjects()
+      this.mainContainerTopText.textContent = "All Projects";
+      this.newTask.classList.add("hide");
+      updateModelAllProjects();
+    });
+  }
+
+  updateControllerAllTasks(updateModelAllTasks) {
+    this.allTasks.addEventListener("click", (e) => {
+      this.mainContainerTopText.textContent = "All Tasks";
+      this.newTask.classList.add("hide");
+      updateModelAllTasks();
+    });
+  }
+
+  updateControllerTodayTasks(updateModelTodayTasks) {
+    this.todayButton.addEventListener("click", (e) => {
+      this.mainContainerTopText.textContent = "Today";
+      this.newTask.classList.add("hide");
+      updateModelTodayTasks();
     });
   }
 
   clickOutsideCloseModal() {
     this.mainContainer.addEventListener("click", (e) => {
       if (!e.target.closest(this.taskModal)) {
-        console.log('asdf');
-        this.taskModalContainer.classList.remove('show')
+        console.log("asdf");
+        this.taskModalContainer.classList.remove("show");
       }
     });
   }

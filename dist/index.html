@@ -15,7 +15,7 @@
   <body>
     <div class="container">
       <div class="logo-container">
-        <div class="logo">To-Do</div>
+        <div class="logo">ToDo</div>
       </div>
       <div class="sidebar-container">
         <div class="sidebar-top">
@@ -24,19 +24,21 @@
           </button>
         </div>
         <div class="sidebar-bottom">
-        <div class="projects-div">Projects</div>
           <div class="projects-container">
           </div>
         </div>
       </div>
       <div class="header-container">
-        <button class="today icon">Today</button>
-        <button id="all-projects" class="all-projects icon">All Projects</button>
+        <button class="today-button icon"> Today</button>
+        <button id="all-projects" class="all-projects icon"> All Projects</button>
+        <button id="all-tasks" class="all-tasks icon"> All Tasks</button>
       </div>
       <div class="main-container-top">
-        <div class="main-container-top-text-container"></div>
+        <div class="main-container-top-text-container">
+          <div class="main-container-top-text"></div>
+        </div>
         <div class="new-task-btn-container">
-            <button class="new-task icon" id="open-task">New Task</button>
+            <button class="new-task icon" id="new-task"> New Task</button>
         </div>
       </div>
       <div class="main-container">
@@ -60,7 +62,7 @@
               </div>
               <div class="dueDate-container">
                 <label for="dueDate">Due Date</label>
-                <input type="text" id="dueDate" name="dueDate" />
+                <input type="date" id="dueDate" name="dueDate" />
               </div>
               <div class="notes-container">
                 <label for="notes">Notes</label>
@@ -93,7 +95,7 @@
               </div>
               <div class="dueDate-container">
                 <label for="edit-dueDate">Due Date</label>
-                <input type="text" id="edit-dueDate" name="edit-dueDate" />
+                <input type="date" id="edit-dueDate" name="edit-dueDate" />
               </div>
               <div class="notes-container">
                 <label for="edit-notes">Notes</label>
@@ -149,6 +151,6 @@
       </div>
     </div>
 
-    <script type="module" src="../src/index.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>
