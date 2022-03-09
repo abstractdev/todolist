@@ -120,6 +120,10 @@ class View {
       this.tasksText.textContent = element.title;
       this.tasksCheckBox = document.createElement("div");
       this.tasksCheckBox.classList.add("tasksCheckBox");
+      this.tasksEditIcon = document.createElement("span");
+      this.tasksEditIcon.classList.add("fa-solid");
+      this.tasksEditIcon.classList.add("fa-pen");
+      this.tasksEditIcon.setAttribute("id", "tasksEditIcon")
       this.tasksDeleteButton = document.createElement("button");
       this.tasksDeleteButton.classList.add("tasksDeleteButton");
       this.tasksDeleteButton.textContent = "Del";
@@ -150,6 +154,7 @@ class View {
       this.highPriority.classList.add("highPriority");
       this.tasksDisplay.appendChild(this.tasksCheckBox);
       this.tasksDisplay.appendChild(this.tasksText);
+      this.tasksDisplay.appendChild(this.tasksEditIcon);
       this.tasksDisplay.appendChild(this.dropdownContainer);
       this.tasksDisplay.appendChild(this.tasksDeleteButton);
       this.dropdownContainer.appendChild(this.dropdown);
@@ -175,7 +180,7 @@ class View {
       const displayCompleteStatus = (() => {
         if (taskArray[taskArray.indexOf(element)].complete === true) {
           this.tasksText.style.textDecoration = "line-through";
-          this.tasksCheckBox.style.backgroundColor = "seashell";
+          this.tasksCheckBox.style.backgroundColor = "#32fbe2";
         }
       })();
 
@@ -194,7 +199,7 @@ class View {
       })();
       const renderEditTaskModal = (() => {
         this.tasksDisplay.addEventListener("click", (e) => {
-          if (e.target.className === "tasksText") {
+          if (e.target.className === "tasksText" || e.target.id === "tasksEditIcon") {
             this.editTaskTitle.value =
               taskArray[taskArray.indexOf(element)].title;
             this.editTaskDescription.value =
@@ -221,6 +226,7 @@ class View {
 
   renderNewTaskModal() {
     this.newTask.addEventListener("click", () => {
+      this.taskTitle.focus();
       this.taskModalContainer.classList.add("show");
     });
   }
